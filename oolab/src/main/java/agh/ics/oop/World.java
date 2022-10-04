@@ -10,20 +10,20 @@ public class World {
 
     }
     static Direction[] directions(String[] arg){
-        Direction[] dir = Direction.values();
-        int real_lenght=0;
-        for(int i=0; i<arg.length; i++){
-            if(arg[i].equals("f") || arg[i].equals("b") || arg[i].equals("r") || arg[i].equals("l")){
-                switch (arg[i]) {
-                    case "f" -> dir[real_lenght] = Direction.FORWARD;
-                    case "b" -> dir[real_lenght] = Direction.BACKWARD;
-                    case "r" -> dir[real_lenght] = Direction.RIGHT;
-                    case "l" -> dir[real_lenght] = Direction.LEFT;
+        Direction[] dir = new Direction[arg.length];
+        int real_length=0;
+        for (String s : arg) {
+            if (s.equals("f") || s.equals("b") || s.equals("r") || s.equals("l")) {
+                switch (s) {
+                    case "f" -> dir[real_length] = Direction.FORWARD;
+                    case "b" -> dir[real_length] = Direction.BACKWARD;
+                    case "r" -> dir[real_length] = Direction.RIGHT;
+                    case "l" -> dir[real_length] = Direction.LEFT;
                 }
-                real_lenght++;
+                real_length++;
             }
         }
-        return Arrays.copyOfRange(dir, 0, real_lenght);
+        return Arrays.copyOfRange(dir, 0, real_length);
     }
 
     static void run(Direction[] arg){
