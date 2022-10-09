@@ -8,6 +8,11 @@ public class World {
         run(directions(args));
         System.out.println("system zakończył działanie");
 
+        Vector2d position1 = new Vector2d(1,2);
+        System.out.println(position1);
+        Vector2d position2 = new Vector2d(-2,1);
+        System.out.println(position2);
+
     }
     static Direction[] directions(String[] arg){
         Direction[] dir = new Direction[arg.length];
