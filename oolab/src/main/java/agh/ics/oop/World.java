@@ -1,6 +1,6 @@
 package agh.ics.oop;
-
 import java.util.Arrays;
+
 
 public class World {
     public static void main (String[] args){
@@ -10,8 +10,11 @@ public class World {
 
         Vector2d position1 = new Vector2d(1,2);
         System.out.println(position1);
-        Vector2d position2 = new Vector2d(-2,1);
+        Vector2d position2 = new Vector2d(-5,3);
         System.out.println(position2);
+        Vector2d position3 = new Vector2d(3,5);
+        System.out.println(position1.upperRight(position2));
+        System.out.println();
 
     }
     static Direction[] directions(String[] arg){

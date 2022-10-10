@@ -8,6 +8,7 @@ public class Vector2d {
         this.x = x;
         this.y = y;
     }
+
     public String toString(){
         String s = "(" + this.x + "," + this.y + ")";
         return s;
