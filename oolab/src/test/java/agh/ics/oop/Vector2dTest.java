@@ -31,26 +31,28 @@ public class Vector2dTest {
 
       @Test
     public void upperRightTest(){
-        Assertions.assertEquals(new Vector2d(2,5).upperRight(new Vector2d(1,10)),new Vector);
+        Assertions.assertEquals(new Vector2d(2,5).upperRight(new Vector2d(1,10)),new Vector2d(2,10));
       }
 
       @Test
     public void lowerLeftTest(){
-
+        Assertions.assertEquals(new Vector2d(2,5).lowerLeft(new Vector2d(1,10)),new Vector2d(1,5));
       }
 
       @Test
     public void addTest(){
-
+          Assertions.assertEquals(new Vector2d(-1,1).add(new Vector2d(1,-1)),new Vector2d(0,0));
+          Assertions.assertEquals(new Vector2d(5,5).add(new Vector2d(6,6)),new Vector2d(11,11));
       }
 
       @Test
     public void subtractTest(){
-
-      }
+          Assertions.assertEquals(new Vector2d(5,5).subtract(new Vector2d(5,5)),new Vector2d(0,0));
+          Assertions.assertEquals(new Vector2d(10,0).subtract(new Vector2d(15,10)),new Vector2d(-5,-10));
+    }
 
       @Test
     public void oppositeTest(){
-
+          Assertions.assertEquals(new Vector2d(2,5).opposite(),new Vector2d(-2,-5));
       }
 }
