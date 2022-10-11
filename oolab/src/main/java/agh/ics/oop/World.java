@@ -1,12 +1,11 @@
 package agh.ics.oop;
 import java.util.Arrays;
 
-
 public class World {
     public static void main (String[] args){
         System.out.println("system wystartował");
 
-        run(Direction.change(args));
+        //run(Direction.change(args));
 
         Vector2d position1 = new Vector2d(1,2);
         System.out.println(position1);
