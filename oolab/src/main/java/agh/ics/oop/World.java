@@ -5,33 +5,17 @@ import java.util.Arrays;
 public class World {
     public static void main (String[] args){
         System.out.println("system wystartował");
-        run(directions(args));
-        System.out.println("system zakończył działanie");
+
+        run(Direction.change(args));
 
         Vector2d position1 = new Vector2d(1,2);
         System.out.println(position1);
-        Vector2d position2 = new Vector2d(-5,3);
+        Vector2d position2 = new Vector2d(-2,1);
         System.out.println(position2);
-        Vector2d position3 = new Vector2d(3,5);
-        System.out.println(position1.upperRight(position2));
-        System.out.println();
+        System.out.println(position1.add(position2));
 
-    }
-    static Direction[] directions(String[] arg){
-        Direction[] dir = new Direction[arg.length];
-        int real_length=0;
-        for (String s : arg) {
-            if (s.equals("f") || s.equals("b") || s.equals("r") || s.equals("l")) {
-                switch (s) {
-                    case "f" -> dir[real_length] = Direction.FORWARD;
-                    case "b" -> dir[real_length] = Direction.BACKWARD;
-                    case "r" -> dir[real_length] = Direction.RIGHT;
-                    case "l" -> dir[real_length] = Direction.LEFT;
-                }
-                real_length++;
-            }
-        }
-        return Arrays.copyOfRange(dir, 0, real_length);
+        System.out.println("system zakończył działanie");
+
     }
 
     static void run(Direction[] arg){

@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import java.util.Map;
+
 public enum MapDirection {
     NORTH,
     SOUTH,
@@ -7,18 +9,34 @@ public enum MapDirection {
     EAST;
 
     public String toString(){
-        switch(this){
-            case NORTH -> return "Północ";
-            case SOUTH -> return "Południe";
-            case WEST -> return "Zachód";
-            case EAST -> return "Wschód";
-        }
+        return switch(this){
+            case NORTH -> "Północ";
+            case SOUTH -> "Południe";
+            case WEST -> "Zachód";
+            case EAST -> "Wschód";
+        };
     }
 
     public MapDirection next(){
-        return this
+        return switch(this){
+            case NORTH -> EAST;
+            case EAST -> SOUTH;
+            case SOUTH -> WEST;
+            case WEST -> NORTH;
 
+        };
+    }
+    public MapDirection previous(){
+        return this.next().next().next();
         }
+
+    public Vector2d toUnitVector() {
+        return switch (this) {
+            case NORTH -> new Vector2d(0, 1);
+            case EAST -> new Vector2d(1, 0);
+            case SOUTH -> new Vector2d(0, -1);
+            case WEST -> new Vector2d(-1, 0);
+        };
     }
 
 }
