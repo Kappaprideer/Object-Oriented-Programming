@@ -29,4 +29,5 @@ public class OptionsParser {
         }
         return Arrays.copyOfRange(move_directions,0,lenght);
     }
+
 }
