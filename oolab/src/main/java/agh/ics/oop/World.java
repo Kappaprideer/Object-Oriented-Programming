@@ -3,17 +3,31 @@ import java.util.Arrays;
 
 public class World {
     public static void main (String[] args){
-        System.out.println("system wystartował");
+        Animal animal = new Animal();
 
-        //run(Direction.change(args));
+        System.out.println(animal);
 
-        Vector2d position1 = new Vector2d(1,2);
-        System.out.println(position1);
-        Vector2d position2 = new Vector2d(-2,1);
-        System.out.println(position2);
-        System.out.println(position1.add(position2));
+        OptionsParser parsing = new OptionsParser();
+        MoveDirection[] moves = parsing.parse(args);
+        for(MoveDirection current_move : moves){
+            animal.move(current_move);
+        }
 
-        System.out.println("system zakończył działanie");
+//        animal.move(MoveDirection.RIGHT);
+//        animal.move(MoveDirection.FORWARD);
+//        animal.move(MoveDirection.FORWARD);
+//        animal.move(MoveDirection.FORWARD);
+
+        System.out.println(animal);
+
+//        System.out.println("system wystartował");
+//        run(Direction.change(args));
+//        Vector2d position1 = new Vector2d(1,2);
+//        System.out.println(position1);
+//        Vector2d position2 = new Vector2d(-2,1);
+//        System.out.println(position2);
+//        System.out.println(position1.add(position2));
+//        System.out.println("system zakończył działanie");
 
     }
 
@@ -31,6 +45,8 @@ public class World {
         }
         System.out.println();
     }
+
+
 
 }
 
