@@ -13,6 +13,13 @@ public class World {
             animal.move(current_move);
         }
 
+        // pkt. 10
+//        Stworzyć publiczną  tablice wypełnioną zerami, jeśli na jakimś polu znajduje się zwierze
+//        to w tablicy pod indeksami odpowiadającymi pozycji zwierzęcia znajduje się jedynka lub wskaźnik na zwierze
+//        które znajduje się na danym polu.
+//        Dodać warunek w Animal.move, aby na danym polu nie mogły stanąć dwa zwierzęta.
+
+
 //        animal.move(MoveDirection.RIGHT);
 //        animal.move(MoveDirection.FORWARD);
 //        animal.move(MoveDirection.FORWARD);
