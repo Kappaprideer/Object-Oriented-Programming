@@ -1,22 +1,33 @@
 package agh.ics.oop;
 
+import java.util.LinkedList;
+import java.util.List;
 
 public class SimulationEngine implements IEngine{
 
     private IWorldMap map;
     private MoveDirection[] moves;
-    public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d positions[]){
+    private List<Animal> animals = new LinkedList<>();
+
+    public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] positions){
         this.moves=moves;
         this.map=map;
         for(Vector2d position : positions){
-            map.place(new Animal(map, position));
+            Animal animal = new Animal(this.map, position);
+            if(this.map.place(animal)){
+                animals.add(animal);
+            }
         }
     }
 
     @Override
     public void run() {
-        for(int i=0; i<moves.length; i++){
-
+        System.out.println(this.map);
+        for(int i=0; i<this.moves.length; i++){
+            animals.get(i % animals.size()).move(moves[i]);
+            System.out.println(this.map);
         }
     }
+
+
 }

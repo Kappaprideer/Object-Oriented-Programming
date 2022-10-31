@@ -1,14 +1,14 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class RectangularMap  implements IWorldMap{
 
-    private
-    private Vector2d upperRight;
-    private Vector2d lowerLeft = new Vector2d(0,0);
-    private List<Animal> animals = new ArrayList<>();
+    IWorldMap map = this;
+    private final Vector2d upperRight;
+    private final Vector2d lowerLeft = new Vector2d(0,0);
+    private final List<Animal> animals = new LinkedList<>();
 
     public RectangularMap(int width, int height){
 
@@ -51,6 +51,7 @@ public class RectangularMap  implements IWorldMap{
     }
 
     public String toString(){
-        return new MapVisualizer(this.map);
+        MapVisualizer visualizer = new MapVisualizer(this.map);
+        return visualizer.draw(this.lowerLeft,this.upperRight);
     }
 }
