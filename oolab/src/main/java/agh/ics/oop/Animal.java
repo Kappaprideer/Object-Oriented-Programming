@@ -2,20 +2,28 @@ package agh.ics.oop;
 
 public class Animal {
 
-    IWorldMap map;
-
+    private IWorldMap map;
+    private MapDirection orientation = MapDirection.NORTH;
+    private Vector2d position = new Vector2d(2,2);
     public Animal(IWorldMap map){
         this.map=map;
     }
 
     public Animal(IWorldMap map, Vector2d initialPosition){
-
+        if(!map.isOccupied(initialPosition)) {
+            this.map=map;
+            position=initialPosition;
+        }
     }
-    private MapDirection orientation = MapDirection.NORTH;
-    private Vector2d position = new Vector2d(2,2);
+
 
     public String toString() {
-        return "pozycja: " + position.toString() + " orientacja: " + orientation.toString();
+        return switch (this.orientation) {
+            case NORTH -> "N";
+            case EAST -> "E";
+            case SOUTH -> "S";
+            case WEST -> "W";
+        };
     }
 
     public boolean isAt(Vector2d position){
@@ -27,15 +35,12 @@ public class Animal {
             case LEFT -> this.orientation=this.orientation.previous();
             case RIGHT -> this.orientation=this.orientation.next();
             case FORWARD -> {
-                if(this.position.add(orientation.toUnitVector()).precedes(new Vector2d(4,4))
-                        && this.position.add(orientation.toUnitVector()).follows(new Vector2d(0,0))
-                        && map.canMoveTo(this.position.add(orientation.toUnitVector()))==True)
+                if(this.map.canMoveTo(this.position.add(orientation.toUnitVector()))){
                     this.position=this.position.add(orientation.toUnitVector());
                 }
             }
             case BACKWARD -> {
-                if(this.position.add(orientation.toUnitVector().opposite()).precedes(new Vector2d(4,4))
-                        && this.position.add(orientation.toUnitVector().opposite()).follows(new Vector2d(0,0))){
+                if(this.map.canMoveTo(this.position.add(orientation.toUnitVector().opposite()))) {
                     this.position = this.position.add(orientation.toUnitVector().opposite());
                 }
             }

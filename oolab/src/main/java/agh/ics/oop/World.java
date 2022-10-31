@@ -3,15 +3,22 @@ import java.util.Arrays;
 
 public class World {
     public static void main (String[] args){
-        Animal animal = new Animal();
 
-        System.out.println(animal);
+        MoveDirection[] directions = new OptionsParser().parse(args);
+        IWorldMap map = new RectangularMap(10, 5);
+        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+        IEngine engine = new SimulationEngine(directions, map, positions);
+        engine.run();
 
-        OptionsParser parsing = new OptionsParser();
-        MoveDirection[] moves = parsing.parse(args);
-        for(MoveDirection current_move : moves){
-            animal.move(current_move);
-        }
+//        Animal animal = new Animal();
+//
+//        System.out.println(animal);
+//
+//        OptionsParser parsing = new OptionsParser();
+//        MoveDirection[] moves = parsing.parse(args);
+//        for(MoveDirection current_move : moves){
+//            animal.move(current_move);
+//        }
 
         // pkt. 10
 //        Stworzyć publiczną  tablice wypełnioną zerami, jeśli na jakimś polu znajduje się zwierze
@@ -25,7 +32,7 @@ public class World {
 //        animal.move(MoveDirection.FORWARD);
 //        animal.move(MoveDirection.FORWARD);
 
-        System.out.println(animal);
+//        System.out.println(animal);
 
 //        System.out.println("system wystartował");
 //        run(Direction.change(args));
