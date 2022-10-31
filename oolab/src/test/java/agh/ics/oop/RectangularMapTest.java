@@ -10,15 +10,47 @@ public class RectangularMapTest {
 
     @Test
     public void placeTest(){
-
-        String[] args = {"f", "f", "f", "f"};
+        String[] args = {"f", "b", "f", "b"};
         MoveDirection[] directions = new OptionsParser().parse(args);
         IWorldMap map = new RectangularMap(10, 5);
-        Vector2d[] positions = { new Vector2d(0,4)};
+        Vector2d[] positions = { new Vector2d(0,0), new Vector2d(0,0), new Vector2d(10,5), new Vector2d(10,5)};
         SimulationEngine engine = new SimulationEngine(directions, map, positions);
         engine.run();
-//        List<Animal> animals = engine.animals;
-//        Assertions.assertEquals(animals.size(),2);
+        Assertions.assertEquals(engine.getAnimals().size(),2);
+        Assertions.assertEquals(engine.getAnimals().get(0).getPosition(), new Vector2d(0,2));
+        Assertions.assertEquals(engine.getAnimals().get(1).getPosition(), new Vector2d(10,3));
+    }
+
+    @Test
+    public void objecAtTest(){
+        IWorldMap map = new RectangularMap(10, 5);
+        Animal animal = new Animal(map, new Vector2d(5,5));
+        map.place(animal);
+        Assertions.assertEquals(map.objectAt(new Vector2d(5,5)), animal);
+        Assertions.assertNull(map.objectAt(new Vector2d(0, 1)));
+    }
+
+    @Test
+    public void isOccupiedTest(){
+        IWorldMap map = new RectangularMap(10, 5);
+        Animal animal_1 = new Animal(map, new Vector2d(0,0));
+        Animal animal_2 = new Animal(map, new Vector2d(10,5));
+        map.place(animal_1);
+        map.place(animal_2);
+        Assertions.assertTrue(map.isOccupied(new Vector2d(0,0)));
+        Assertions.assertTrue(map.isOccupied(new Vector2d(10, 5)));
+        Assertions.assertFalse(map.isOccupied(new Vector2d(0,1)));
+    }
+
+    @Test
+    public void canMoveTest(){
+        IWorldMap map = new RectangularMap(5, 5);
+        Animal animal_1 = new Animal(map, new Vector2d(0,0));
+        Animal animal_2 = new Animal(map, new Vector2d(1,0));
+        map.place(animal_1);
+        map.place(animal_2);
+        Assertions.assertTrue(map.canMoveTo(new Vector2d(0,1)));
+        Assertions.assertFalse(map.canMoveTo(new Vector2d(1,0)));
     }
 
 
