@@ -5,8 +5,8 @@ import java.util.List;
 
 public class SimulationEngine implements IEngine{
 
-    private IWorldMap map;
-    private MoveDirection[] moves;
+    private final IWorldMap map;
+    private final MoveDirection[] moves;
     private List<Animal> animals = new LinkedList<>();
 
     public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] positions){
@@ -14,7 +14,7 @@ public class SimulationEngine implements IEngine{
         this.map=map;
         for(Vector2d position : positions){
             Animal animal = new Animal(this.map, position);
-            if(this.map.place(animal)){
+            if(map.isOccupied(position) && this.map.place(animal)){
                 animals.add(animal);
             }
         }
@@ -24,7 +24,7 @@ public class SimulationEngine implements IEngine{
     public void run() {
         System.out.println(this.map);
         for(int i=0; i<this.moves.length; i++){
-            animals.get(i % animals.size()).move(moves[i]);
+            this.animals.get(i % this.animals.size()).move(this.moves[i]);
             System.out.println(this.map);
         }
     }

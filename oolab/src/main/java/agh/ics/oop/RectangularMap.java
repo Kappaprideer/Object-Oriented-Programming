@@ -8,10 +8,9 @@ public class RectangularMap  implements IWorldMap{
     IWorldMap map = this;
     private final Vector2d upperRight;
     private final Vector2d lowerLeft = new Vector2d(0,0);
-    private final List<Animal> animals = new LinkedList<>();
+    private List<Animal> animals = new LinkedList<>();
 
     public RectangularMap(int width, int height){
-
         this.upperRight = new Vector2d(width, height);
     }
 
@@ -32,11 +31,12 @@ public class RectangularMap  implements IWorldMap{
 
     @Override
     public boolean place(Animal animal) {
-        for(Animal livingAnimal : this.animals){
-            if (livingAnimal==animal){
+        for(Animal livingAnimal : animals){
+            if (livingAnimal.equals(animal)){
                 return false;
             }
         }
+        System.out.println("INNE ZWIERZETA");
         this.animals.add(animal);
         return true;
     }
@@ -49,7 +49,7 @@ public class RectangularMap  implements IWorldMap{
         }
         return null;
     }
-
+    @Override
     public String toString(){
         MapVisualizer visualizer = new MapVisualizer(this.map);
         return visualizer.draw(this.lowerLeft,this.upperRight);

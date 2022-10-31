@@ -7,8 +7,8 @@ public class Vector2dTest {
 
     @Test
     public void equalsTest(){
-        Assertions.assertTrue(new Vector2d(-10,20).equals(new Vector2d(-10,20)));
-        Assertions.assertFalse(new Vector2d(0,0).equals(new Vector2d(100,0)));
+        Assertions.assertEquals(new Vector2d(-10, 20), new Vector2d(-10, 20));
+        Assertions.assertNotEquals(new Vector2d(0, 0), new Vector2d(100, 0));
       }
 
       @Test
