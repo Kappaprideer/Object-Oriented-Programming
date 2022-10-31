@@ -14,7 +14,7 @@ public class RectangularMapTest {
         String[] args = {"f", "f", "f", "f"};
         MoveDirection[] directions = new OptionsParser().parse(args);
         IWorldMap map = new RectangularMap(10, 5);
-        Vector2d[] positions = { new Vector2d(0,4), new Vector2d(0,4) };
+        Vector2d[] positions = { new Vector2d(0,4)};
         SimulationEngine engine = new SimulationEngine(directions, map, positions);
         engine.run();
 //        List<Animal> animals = engine.animals;

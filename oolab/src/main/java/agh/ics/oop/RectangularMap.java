@@ -31,12 +31,11 @@ public class RectangularMap  implements IWorldMap{
 
     @Override
     public boolean place(Animal animal) {
-        for(Animal livingAnimal : animals){
-            if (livingAnimal.equals(animal)){
+        for(Animal livingAnimal : this.animals){
+            if(livingAnimal.isAt(animal.getPosition()) || !map.canMoveTo(animal.getPosition())){
                 return false;
             }
         }
-        System.out.println("INNE ZWIERZETA");
         this.animals.add(animal);
         return true;
     }
