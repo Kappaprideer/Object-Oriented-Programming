@@ -26,10 +26,10 @@ public class SimulationEngine implements IEngine{
 
     @Override
     public void run() {
-//        System.out.println(this.map);
+        System.out.println(this.map);
         for(int i=0; i<this.moves.length; i++){
             this.animals.get(i % this.animals.size()).move(this.moves[i]);
-//            System.out.println(this.map);
+            System.out.println(this.map);
         }
     }
 
