@@ -50,4 +50,12 @@ public class Vector2d {
         return new Vector2d(-this.x,-this.y);
     }
 
+    public static Vector2d getRandomIntPosition(double min,double max){
+        min = (int) Math.ceil(min);
+        max = (int) Math.floor(max);
+        int x= (int) Math.floor(Math.random() * (max - min + 1) + min);
+        int y = (int) Math.floor(Math.random() * (max - min + 1) + min);
+        return new Vector2d(x,y);
+    }
+
 }

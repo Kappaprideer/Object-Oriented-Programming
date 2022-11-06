@@ -3,7 +3,7 @@ package agh.ics.oop;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RectangularMap  implements IWorldMap{
+public class RectangularMap  extends AbstractWorldMap{
 
     IWorldMap map = this;
     private final Vector2d upperRight;
