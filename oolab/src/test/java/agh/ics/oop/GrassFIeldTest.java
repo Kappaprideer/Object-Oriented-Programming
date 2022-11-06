@@ -35,7 +35,6 @@ public class GrassFIeldTest {
         map.place(animal_2);
         Assertions.assertTrue(map.isOccupied(new Vector2d(0,0)));
         Assertions.assertTrue(map.isOccupied(new Vector2d(10, 5)));
-        Assertions.assertFalse(map.isOccupied(new Vector2d(0,1)));
     }
 
     @Test

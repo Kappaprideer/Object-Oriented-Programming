@@ -2,21 +2,10 @@ package agh.ics.oop;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
-
-import static java.lang.Math.min;
-import static java.lang.Math.sqrt;
 
 public class GrassField extends AbstractWorldMap{
-
-    private final IWorldMap map = this;
     private final int numOfFields;
-
-    private Vector2d lowerLeft = new Vector2d(0,0);
-    private Vector2d upperRight = new Vector2d(0,0);
-
-    private List<Grass> grassList = new LinkedList<>();
-    private List<Animal> animals = new LinkedList<>();
+    private final List<Grass> grassList = new LinkedList<>();
 
 
 
@@ -31,23 +20,12 @@ public class GrassField extends AbstractWorldMap{
         }
     }
 
-    @Override
-    public boolean place(Animal animal) {
-        for(Animal livingAnimal : this.animals){
-            if(livingAnimal.isAt(animal.getPosition()) || !map.canMoveTo(animal.getPosition())){
-                return false;
-            }
-        }
-        this.animals.add(animal);
-        return true;
-    }
 
     @Override
     public Object objectAt(Vector2d position) {
-        for(Animal animal: animals){
-            if(animal.getPosition().equals(position))
-                return animal;
-        }
+        Object object = super.objectAt(position);
+        if(object instanceof Animal)
+            return object;
         for(Grass grass : grassList){
             if(grass.getPosition().equals(position))
                 return grass;
@@ -62,11 +40,8 @@ public class GrassField extends AbstractWorldMap{
 
     @Override
     public boolean isOccupied(Vector2d position) {
-        for(Animal animal: animals) {
-            if (animal.getPosition().equals(position)) {
-                return true;
-            }
-        }
+        if(super.isOccupied(position))
+            return true;
         for(Grass grass : grassList) {
             if (grass.getPosition().equals(position)){
                 return true;
@@ -75,20 +50,17 @@ public class GrassField extends AbstractWorldMap{
     return false;
     }
 
-    private void getBoardCorners(){
-        for(Animal animal : animals){
+    void boardCorners() {
+        this.lowerLeft = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        this.upperRight = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
+        for (Animal animal : animals) {
             this.lowerLeft = this.lowerLeft.lowerLeft(animal.getPosition());
             this.upperRight = this.upperRight.upperRight(animal.getPosition());
         }
-        for(Grass grass : grassList){
+        for (Grass grass : grassList) {
             this.lowerLeft = this.lowerLeft.lowerLeft(grass.getPosition());
             this.upperRight = this.upperRight.upperRight(grass.getPosition());
         }
     }
-    @Override
-    public String toString(){
-        MapVisualizer visualizer = new MapVisualizer(this.map);
-        this.getBoardCorners();
-        return visualizer.draw(this.lowerLeft,this.upperRight);
-    }
+
 }
