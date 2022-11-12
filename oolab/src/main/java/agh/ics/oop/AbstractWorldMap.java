@@ -1,49 +1,44 @@
 package agh.ics.oop;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-abstract class AbstractWorldMap implements IWorldMap {
+abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
 
     protected final IWorldMap map = this;
     protected Vector2d lowerLeft;
     protected Vector2d upperRight;
     MapVisualizer visualizer = new MapVisualizer(this.map);
 
-    protected List<Animal> animals = new LinkedList<>();
-
+    protected Map<Vector2d, Animal> animals = new HashMap<>();
 
     public boolean isOccupied(Vector2d position) {
-        for(Animal animal : this.animals){
-            if(animal.isAt(position)){
-                return true;
-            }
-        }
-        return false;
+        Animal animal = animals.get(position);
+        return animal != null;
     }
 
     public boolean place(Animal animal) {
-        for(Animal livingAnimal : this.animals){
-            if(livingAnimal.isAt(animal.getPosition()) || !map.canMoveTo(animal.getPosition())){
+        if(animals.get(animal.getPosition())!=null || !map.canMoveTo(animal.getPosition())){
                 return false;
-            }
         }
-        this.animals.add(animal);
+        this.animals.put(animal.getPosition(),animal);
+        animal.addObserver(this);
         return true;
     }
 
     public Object objectAt(Vector2d position) {
-        for(Animal animal : this.animals){
-            if(animal.isAt(position))
-                return animal;
-        }
-        return null;
+        return animals.get(position);
     }
 
     abstract void boardCorners();
     public String toString(){
         boardCorners();
         return visualizer.draw(this.lowerLeft,this.upperRight);
+    }
+
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition){
+        Animal animal=animals.remove(oldPosition);
+        animals.put(newPosition,animal);
     }
 
 }

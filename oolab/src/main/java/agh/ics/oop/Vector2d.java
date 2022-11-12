@@ -38,12 +38,22 @@ public class Vector2d {
         return new Vector2d(this.x-other.x,this.y-other.y);
     }
 
-    public boolean equals(Object other){
-        if (this == other)
-            return true;
-        if (!(other instanceof Vector2d that))
-            return false;
-        return this.x==that.x && this.y==that.y;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Vector2d vector2d = (Vector2d) o;
+
+        if (x != vector2d.x) return false;
+        return y == vector2d.y;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        return result;
     }
 
     Vector2d opposite(){

@@ -1,22 +1,25 @@
 package agh.ics.oop;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class GrassField extends AbstractWorldMap{
     private final int numOfFields;
-    private final List<Grass> grassList = new LinkedList<>();
-
-
+    private final Map<Vector2d,Grass> grassList = new HashMap<>();
 
     public GrassField(int numOfFields){
         this.numOfFields=numOfFields;
+        this.lowerLeft = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        this.upperRight = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
         for(int i=0; i<numOfFields; i++){
             Vector2d position = Vector2d.getRandomIntPosition(0,Math.sqrt(this.numOfFields*10));
             while(objectAt(position) != null){
                 position = Vector2d.getRandomIntPosition(0,Math.sqrt(this.numOfFields*10));
             }
-            grassList.add(new Grass(position));
+            grassList.put(position,new Grass(position));
+            this.lowerLeft=this.lowerLeft.lowerLeft(position);
+            this.upperRight=this.upperRight.upperRight(position);
         }
     }
 
@@ -26,11 +29,7 @@ public class GrassField extends AbstractWorldMap{
         Object object = super.objectAt(position);
         if(object instanceof Animal)
             return object;
-        for(Grass grass : grassList){
-            if(grass.getPosition().equals(position))
-                return grass;
-        }
-        return null;
+        return grassList.get(position);
     }
 
     @Override
@@ -42,24 +41,17 @@ public class GrassField extends AbstractWorldMap{
     public boolean isOccupied(Vector2d position) {
         if(super.isOccupied(position))
             return true;
-        for(Grass grass : grassList) {
-            if (grass.getPosition().equals(position)){
-                return true;
-            }
-        }
-    return false;
+        return grassList.get(position) != null;
     }
 
     void boardCorners() {
-        this.lowerLeft = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
-        this.upperRight = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
-        for (Animal animal : animals) {
-            this.lowerLeft = this.lowerLeft.lowerLeft(animal.getPosition());
-            this.upperRight = this.upperRight.upperRight(animal.getPosition());
+        for (Vector2d position : animals.keySet()) {
+            this.lowerLeft=this.lowerLeft.lowerLeft(position);
+            this.upperRight = this.upperRight.upperRight(position);
         }
-        for (Grass grass : grassList) {
-            this.lowerLeft = this.lowerLeft.lowerLeft(grass.getPosition());
-            this.upperRight = this.upperRight.upperRight(grass.getPosition());
+        for (Vector2d position : grassList.keySet()) {
+            this.lowerLeft=this.lowerLeft.lowerLeft(position);
+            this.upperRight=this.upperRight.upperRight(position);
         }
     }
 
