@@ -1,14 +1,23 @@
 package agh.ics.oop;
 
+import agh.ics.oop.gui.App;
+import javafx.application.Application;
+
 public class World {
     public static void main (String[] args){
+        try {
 
-        MoveDirection[] directions = new OptionsParser().parse(args);
-        IWorldMap map = new GrassField(10);
-        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
-        IEngine engine = new SimulationEngine(directions, map, positions);
-        engine.run();
+//            Application.launch(App.class, args);
 
+            MoveDirection[] directions = new OptionsParser().parse(args);
+            IWorldMap map = new GrassField(10);
+            Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(3, 4)};
+            IEngine engine = new SimulationEngine(directions, map, positions);
+            engine.run();
+        }
+        catch (IllegalArgumentException ex){
+            System.out.println(ex.getMessage());
+        }
         // pkt 10
 //        Stworzyć publiczną  tablice wypełnioną zerami, jeśli na jakimś polu znajduje się zwierze
 //        to w tablicy pod indeksami odpowiadającymi pozycji zwierzęcia znajduje się jedynka lub wskaźnik na zwierze

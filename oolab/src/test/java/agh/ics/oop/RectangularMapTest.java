@@ -9,17 +9,31 @@ public class RectangularMapTest {
 
 
     @Test
-    public void placeTest(){
+    public void placeCorrectlyTest(){
         String[] args = {"f", "b", "f", "b"};
         MoveDirection[] directions = new OptionsParser().parse(args);
         IWorldMap map = new RectangularMap(10, 5);
-        Vector2d[] positions = { new Vector2d(0,0), new Vector2d(0,0), new Vector2d(10,5), new Vector2d(10,5)};
+        Vector2d[] positions = { new Vector2d(0,0), new Vector2d(10,5)};
         SimulationEngine engine = new SimulationEngine(directions, map, positions);
         engine.run();
         Assertions.assertEquals(engine.getAnimals().size(),2);
         Assertions.assertEquals(engine.getAnimals().get(0).getPosition(), new Vector2d(0,2));
         Assertions.assertEquals(engine.getAnimals().get(1).getPosition(), new Vector2d(10,3));
     }
+
+    @Test
+    public void placeThrowsTest(){
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            String[] args = {"f", "b", "f", "b"};
+            MoveDirection[] directions = new OptionsParser().parse(args);
+            IWorldMap map = new RectangularMap(10, 5);
+            Vector2d[] positions = { new Vector2d(0,0), new Vector2d(0,0), new Vector2d(10,5), new Vector2d(10,5)};
+            SimulationEngine engine = new SimulationEngine(directions, map, positions);
+            engine.run();});
+
+        Assertions.assertEquals(exception.getMessage(),"Can't add animal, positoin: (0,0) is currently occupied.");
+    }
+
 
     @Test
     public void objecAtTest(){

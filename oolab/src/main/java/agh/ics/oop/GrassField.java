@@ -7,6 +7,7 @@ import java.util.Map;
 public class GrassField extends AbstractWorldMap{
     private final int numOfFields;
     private final Map<Vector2d,Grass> grassList = new HashMap<>();
+    MapBoundary boundary = new MapBoundary();
 
     public GrassField(int numOfFields){
         this.numOfFields=numOfFields;
@@ -17,12 +18,12 @@ public class GrassField extends AbstractWorldMap{
             while(objectAt(position) != null){
                 position = Vector2d.getRandomIntPosition(0,Math.sqrt(this.numOfFields*10));
             }
-            grassList.put(position,new Grass(position));
-            this.lowerLeft=this.lowerLeft.lowerLeft(position);
-            this.upperRight=this.upperRight.upperRight(position);
+            Grass grass = new Grass(position);
+            grassList.put(position,grass);
+            this.boundary.add(grass);
         }
+        super.addMapBoundary(this.boundary);
     }
-
 
     @Override
     public Object objectAt(Vector2d position) {
@@ -45,14 +46,8 @@ public class GrassField extends AbstractWorldMap{
     }
 
     void boardCorners() {
-        for (Vector2d position : animals.keySet()) {
-            this.lowerLeft=this.lowerLeft.lowerLeft(position);
-            this.upperRight = this.upperRight.upperRight(position);
-        }
-        for (Vector2d position : grassList.keySet()) {
-            this.lowerLeft=this.lowerLeft.lowerLeft(position);
-            this.upperRight=this.upperRight.upperRight(position);
-        }
+        this.lowerLeft=this.boundary.getLowerLeft();
+        this.upperRight=this.boundary.getUpperRight();
     }
 
 }

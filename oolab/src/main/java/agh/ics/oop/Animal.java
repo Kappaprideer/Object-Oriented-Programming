@@ -11,8 +11,6 @@ public class Animal implements IMapElement{
     private Vector2d position = new Vector2d(2,2);
     private List<IPositionChangeObserver> observerList = new ArrayList<>();
 
-    public Animal(){
-    }
 
     public Animal(IWorldMap map){
         this.map=map;
