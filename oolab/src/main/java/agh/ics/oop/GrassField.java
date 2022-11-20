@@ -22,7 +22,16 @@ public class GrassField extends AbstractWorldMap{
             grassList.put(position,grass);
             this.boundary.add(grass);
         }
-        super.addMapBoundary(this.boundary);
+    }
+
+    @Override
+    public boolean place(Animal animal) {
+        if(super.place(animal)){
+            boundary.add(animal);
+            animal.addObserver(boundary);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -49,5 +58,14 @@ public class GrassField extends AbstractWorldMap{
         this.lowerLeft=this.boundary.getLowerLeft();
         this.upperRight=this.boundary.getUpperRight();
     }
-
+    @Override
+    public Vector2d getLowerLeft(){
+        boardCorners();
+        return this.lowerLeft;
+    }
+    @Override
+    public Vector2d getUpperRight(){
+        boardCorners();
+        return this.upperRight;
+    }
 }

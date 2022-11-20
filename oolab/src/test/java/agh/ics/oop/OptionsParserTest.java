@@ -40,14 +40,15 @@ public class OptionsParserTest {
         IWorldMap map = new GrassField(100);
         Animal animal = new Animal(map);
         map.place(animal);
-        String[] arguments = {"forward","f","r","right","l","left","b","backward"};
+        String[] arguments = {"forward","f","r","right","l","left","b","backward", "b"};
         OptionsParser parser= new OptionsParser();
         MoveDirection[] moves = parser.parse(arguments);
         for(MoveDirection move : moves){
             animal.move(move);
         }
-        Assertions.assertEquals(animal.getPosition(),new Vector2d(2,2));
+        Assertions.assertEquals(new Vector2d(2,1),animal.getPosition());
         Assertions.assertTrue(animal.isOriented(MapDirection.NORTH));
+
     }
 
     @Test

@@ -45,4 +45,7 @@ public interface IWorldMap {
      * @return Object or null if the position is not occupied.
      */
     Object objectAt(Vector2d position);
+
+    Vector2d getUpperRight();
+    Vector2d getLowerLeft();
 }

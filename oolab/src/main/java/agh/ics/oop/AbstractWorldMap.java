@@ -10,13 +10,8 @@ abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     protected Vector2d upperRight;
     MapVisualizer visualizer = new MapVisualizer(this.map);
 
-    protected MapBoundary mapBoundary = new MapBoundary();
-
     protected Map<Vector2d, Animal> animals = new HashMap<>();
 
-    protected void addMapBoundary(MapBoundary mapBoundary1){
-        this.mapBoundary=mapBoundary1;
-    }
 
     public boolean isOccupied(Vector2d position) {
         Animal animal = animals.get(position);
@@ -28,9 +23,7 @@ abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
             throw new IllegalArgumentException("Can't add animal, positoin: " + animal.getPosition().toString() + " is currently occupied.");
         }
         this.animals.put(animal.getPosition(),animal);
-        mapBoundary.add(animal);
         animal.addObserver(this);
-        animal.addObserver(this.mapBoundary);
         return true;
     }
 
@@ -39,6 +32,15 @@ abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     }
 
     abstract void boardCorners();
+
+    public Vector2d getLowerLeft(){
+        return this.lowerLeft;
+    }
+    public Vector2d getUpperRight(){
+        return this.upperRight;
+    }
+
+
     public String toString(){
         boardCorners();
         return visualizer.draw(this.lowerLeft,this.upperRight);
