@@ -70,4 +70,19 @@ public class Animal implements IMapElement{
             observer.positionChanged(oldPosition,newPosition);
         }
     }
+
+    @Override
+    public String getView(){
+        return switch(this.orientation){
+            case NORTH -> "src/main/resources/up.png";
+            case EAST -> "src/main/resources/right.png";
+            case SOUTH -> "src/main/resources/down.png";
+            case WEST -> "src/main/resources/left.png";
+        };
+    }
+
+    @Override
+    public String label(){
+        return ("Z " + position.toString());
+    }
 }

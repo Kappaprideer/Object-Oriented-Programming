@@ -1,25 +1,32 @@
 package agh.ics.oop;
 
-import javax.swing.text.html.ImageView;
+import javafx.geometry.Pos;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileInputStream;
-
-
 
 public class GuiElementBox {
     Image image;
     ImageView imageView;
     Label label;
+    VBox vBox;
+
     public GuiElementBox(IMapElement mapElement) throws FileNotFoundException{
-        this.image= new Image(new FIle);
-        imageView.setFitWidth(20);
-        imageView.setFitHeight(20);
+        this.image = new Image(new FileInputStream(mapElement.getView()));
+        this.imageView = new ImageView(this.image);
+        this.imageView.setFitWidth(20);
+        this.imageView.setFitHeight(20);
+        this.label = new Label(mapElement.label());
+        this.vBox = new VBox(this.imageView,this.label);
+        this.vBox.setAlignment(Pos.CENTER);
 
     }
-
-
-    VirtualBox vbox = new GuiElementBox();
+    public VBox getvBox(){
+        return this.vBox;
+    }
 
 }
