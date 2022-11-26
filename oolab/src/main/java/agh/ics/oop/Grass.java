@@ -23,6 +23,6 @@ public class Grass implements IMapElement{
         return "src/main/resources/grass.png";
     }
     public String label(){
-        return "TRAWA";
+        return "Trawa";
     }
 }

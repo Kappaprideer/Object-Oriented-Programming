@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 
 
+import java.io.FileNotFoundException;
+
 import static java.lang.Math.*;
 
 
@@ -27,7 +29,7 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws FileNotFoundException {
         Vector2d lowerLeft = this.map.getLowerLeft();
         Vector2d upperRight = this.map.getUpperRight();
         int xMin = min(lowerLeft.x, upperRight.x);
@@ -36,7 +38,7 @@ public class App extends Application {
         int yMax = max(lowerLeft.y, upperRight.y);
         int horizontal = xMax-xMin+1;
         int vertical = yMax-yMin+1;
-        int constant=40;
+        int constant=50;
         // zmienna constant jest równa szerokości oraz wysokości poszczególnych komórek
 
         GridPane gridPane = new GridPane();
@@ -67,11 +69,12 @@ public class App extends Application {
 
         for(int x=1; x<=horizontal; x++)
             for(int y=1; y<=vertical; y++){
-                Object mapObject = this.map.objectAt(new Vector2d((x-1)+lowerLeft.x,upperRight.y-(y-1)));
+                IMapElement mapObject = (IMapElement) this.map.objectAt(new Vector2d((x-1)+lowerLeft.x,upperRight.y-(y-1)));
                 if(mapObject!=null){
                     Label grassOrAnimal = new Label(mapObject.toString());
-                    gridPane.add(grassOrAnimal,x,y,1,1);
-                    GridPane.setHalignment(grassOrAnimal, HPos.CENTER);
+                    GuiElementBox guiElementBox = new GuiElementBox(mapObject);
+                    gridPane.add(guiElementBox.getvBox(),x,y,1,1);
+                    GridPane.setHalignment(guiElementBox.getvBox(), HPos.CENTER);
 
                 }
             }

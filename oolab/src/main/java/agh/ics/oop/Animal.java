@@ -83,6 +83,6 @@ public class Animal implements IMapElement{
 
     @Override
     public String label(){
-        return ("Z " + position.toString());
+        return ("Z" + position.toString());
     }
 }
