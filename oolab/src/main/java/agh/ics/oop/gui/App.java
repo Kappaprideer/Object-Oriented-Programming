@@ -30,7 +30,11 @@ public class App extends Application{
     public void start(Stage primaryStage) {
         TextField textField = new TextField();
         Button startButton = getStartButton(textField);
-        Button directionButton = getDirectionButton();
+        Button directionButton = new Button(orientation.toString());
+        directionButton.setOnAction((action) -> {
+            this.orientation = this.orientation.next();
+            directionButton.setText(this.orientation.toString());
+        });
         HBox hBox = new HBox(this.gridPane, textField, startButton, directionButton);
         Scene scene = new Scene(hBox, 800, 800);
 //        Scene scene = new Scene(this.gridPane, (this.horizontal+1)*this.constant, (this.vertical+1)*this.constant);
@@ -115,14 +119,7 @@ public class App extends Application{
         return startButton;
     }
 
-    public Button getDirectionButton() {
-        Button directionButton = new Button(orientation.toString());
-        directionButton.setOnAction((action) -> {
-            this.orientation = this.orientation.next();
-            directionButton.setText(this.orientation.toString());
-        });
-        return directionButton;
-    }
+
 
 
 }
