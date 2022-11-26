@@ -3,16 +3,18 @@ package agh.ics.oop;
 import agh.ics.oop.gui.*;
 import javafx.application.Platform;
 
-import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SimulationEngine implements IEngine{
+import static java.lang.Thread.sleep;
+
+public class SimulationEngine implements IEngine, Runnable{
 
     private final IWorldMap map;
     private final MoveDirection[] moves;
     private List<Animal> animals = new LinkedList<>();
     private final App app;
+    int moveDelay = 500;
 
     public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] positions, App app){
         this.moves=moves;
@@ -32,24 +34,21 @@ public class SimulationEngine implements IEngine{
 
     @Override
     public void run() {
-        Platform.runLater(() -> {
-            try {
-                this.app.createMap(this.map);
-                Thread.sleep(300);
-            } catch (FileNotFoundException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        showMap();
         for(int i=0; i<this.moves.length; i++){
             this.animals.get(i % this.animals.size()).move(this.moves[i]);
-            Platform.runLater( () -> {
-                try {
-                    this.app.createMap(this.map);
-                    Thread.sleep(300);
-                } catch (FileNotFoundException | InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+            showMap();
+        }
+    }
+
+    public void showMap(){
+        Platform.runLater( () -> {
+            this.app.createMap(this.map);
+        });
+        try{
+            sleep(moveDelay);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

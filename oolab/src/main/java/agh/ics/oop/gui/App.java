@@ -2,6 +2,7 @@ package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.layout.ColumnConstraints;
@@ -17,44 +18,45 @@ import static java.lang.Math.*;
 
 
 public class App extends Application{
-    private MoveDirection[] directions;
-    private IWorldMap map;
-    int horizontal,vertical,constant,xMin,xMax,yMin,yMax;
-    Vector2d lowerLeft, upperRight;
-    GridPane gridPane;
+    int horizontal,vertical,constant=50;
+    private Vector2d lowerLeft, upperRight;
+    private final GridPane gridPane = new GridPane();
 
 
     public void init() {
-        directions = new OptionsParser().parse(getParameters().getRaw().toArray(new String[0]));
-        this.map = new GrassField(10);
+        MoveDirection[] directions = new OptionsParser().parse(getParameters().getRaw().toArray(new String[0]));
+        IWorldMap map = new GrassField(10);
         Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(3, 4)};
-        IEngine engine = new SimulationEngine(directions, this.map, positions, this);
-        engine.run();
+        IEngine engine = new SimulationEngine(directions, map, positions, this);
+        Thread engineThread = new Thread(engine::run);
+        engineThread.start();
     }
 
     @Override
-    public void start(Stage primaryStage) throws FileNotFoundException {
-        createGrid(this.map);
+    public void start(Stage primaryStage) {
+
         Scene scene = new Scene(this.gridPane, (this.horizontal+1)*this.constant, (this.vertical+1)*this.constant);
+//        Scene scene = new Scene(this.gridPane, 800, 800);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+    public void setHorizontalAndVertical(){
+        
+    }
+
 
     public void createGrid(IWorldMap map){
 
         this.lowerLeft = map.getLowerLeft();
         this.upperRight =map.getUpperRight();
-        this.xMin = min(lowerLeft.x, upperRight.x);
-        this.xMax = max(lowerLeft.x, upperRight.x);
-        this.yMin = min(lowerLeft.y, upperRight.y);
-        this.yMax = max(lowerLeft.y, upperRight.y);
+        int xMin = min(lowerLeft.x, upperRight.x);
+        int xMax = max(lowerLeft.x, upperRight.x);
+        int yMin = min(lowerLeft.y, upperRight.y);
+        int yMax = max(lowerLeft.y, upperRight.y);
         this.horizontal = xMax - xMin + 1;
         this.vertical = yMax - yMin + 1;
-        this.constant = 50;
-        // zmienna constant jest równa szerokości oraz wysokości poszczególnych komórek
 
-        this.gridPane = new GridPane();
-        this.gridPane.setGridLinesVisible(true);
+
         Label headerLabel = new Label("y/x");
         this.gridPane.add(headerLabel,0,0,1,1);
         this.gridPane.getColumnConstraints().add(new ColumnConstraints(this.constant));
@@ -91,14 +93,18 @@ public class App extends Application{
             }
     }
 
-    public void createMap(IWorldMap map) throws FileNotFoundException{
-        this.gridPane.setGridLinesVisible(false);
+    public void createMap(IWorldMap map){
+        this.gridPane.getChildren().clear();
         this.gridPane.getColumnConstraints().clear();
         this.gridPane.getRowConstraints().clear();
-        this.gridPane.getChildren().clear();
+        this.gridPane.setGridLinesVisible(false);
         this.gridPane.setGridLinesVisible(true);
         createGrid(map);
-        placeObjectsOnGrid(map);
+        try {
+             placeObjectsOnGrid(map);
+        } catch (FileNotFoundException e) {
+           throw new RuntimeException(e);
+        }
     }
 
 
