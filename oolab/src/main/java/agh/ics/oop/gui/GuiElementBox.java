@@ -27,7 +27,7 @@ public class GuiElementBox {
             this.vBox.setAlignment(Pos.CENTER);
         }
         catch(FileNotFoundException exception){
-            throw new FileNotFoundException("File was not found.");
+            throw new FileNotFoundException("File was not found." + exception);
         }
     }
     public VBox getvBox(){

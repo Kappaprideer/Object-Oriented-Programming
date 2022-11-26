@@ -15,13 +15,14 @@ public class SimulationEngine implements IEngine, Runnable{
     private List<Animal> animals = new LinkedList<>();
     private final App app;
     int moveDelay = 500;
+    int startDelay=1500;
 
-    public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] positions, App app){
+    public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] positions, MapDirection orientation, App app){
         this.moves=moves;
         this.map=map;
         this.app=app;
         for(Vector2d position : positions){
-            Animal animal = new Animal(this.map, position);
+            Animal animal = new Animal(this.map, position, orientation);
             if(this.map.place(animal)){
                 animals.add(animal);
             }
@@ -34,21 +35,21 @@ public class SimulationEngine implements IEngine, Runnable{
 
     @Override
     public void run() {
-        showMap();
-        for(int i=0; i<this.moves.length; i++){
-            this.animals.get(i % this.animals.size()).move(this.moves[i]);
-            showMap();
-        }
-    }
-
-    public void showMap(){
-        Platform.runLater( () -> {
-            this.app.createMap(this.map);
-        });
+        Platform.runLater( () -> this.app.createMap(this.map));
         try{
-            sleep(moveDelay);
+            sleep(startDelay);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        for(int i=0; i<this.moves.length; i++){
+            this.animals.get(i % this.animals.size()).move(this.moves[i]);
+            Platform.runLater( () -> this.app.createMap(this.map));
+            try{
+                sleep(moveDelay);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
+
 }

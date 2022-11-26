@@ -2,11 +2,13 @@ package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
@@ -18,31 +20,24 @@ import static java.lang.Math.*;
 
 
 public class App extends Application{
-    int horizontal,vertical,constant=50;
+    int horizontal,vertical,width=70, height=50;
     private Vector2d lowerLeft, upperRight;
     private final GridPane gridPane = new GridPane();
+    MapDirection orientation = MapDirection.NORTH;
 
-
-    public void init() {
-        MoveDirection[] directions = new OptionsParser().parse(getParameters().getRaw().toArray(new String[0]));
-        IWorldMap map = new GrassField(10);
-        Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(3, 4)};
-        IEngine engine = new SimulationEngine(directions, map, positions, this);
-        Thread engineThread = new Thread(engine::run);
-        engineThread.start();
-    }
 
     @Override
     public void start(Stage primaryStage) {
-
-        Scene scene = new Scene(this.gridPane, (this.horizontal+1)*this.constant, (this.vertical+1)*this.constant);
-//        Scene scene = new Scene(this.gridPane, 800, 800);
+        TextField textField = new TextField();
+        Button startButton = getStartButton(textField);
+        Button directionButton = getDirectionButton();
+        HBox hBox = new HBox(this.gridPane, textField, startButton, directionButton);
+        Scene scene = new Scene(hBox, 800, 800);
+//        Scene scene = new Scene(this.gridPane, (this.horizontal+1)*this.constant, (this.vertical+1)*this.constant);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-    public void setHorizontalAndVertical(){
-        
-    }
+
 
 
     public void createGrid(IWorldMap map){
@@ -56,11 +51,10 @@ public class App extends Application{
         this.horizontal = xMax - xMin + 1;
         this.vertical = yMax - yMin + 1;
 
-
         Label headerLabel = new Label("y/x");
         this.gridPane.add(headerLabel,0,0,1,1);
-        this.gridPane.getColumnConstraints().add(new ColumnConstraints(this.constant));
-        this.gridPane.getRowConstraints().add(new RowConstraints(this.constant));
+        this.gridPane.getColumnConstraints().add(new ColumnConstraints(width));
+        this.gridPane.getRowConstraints().add(new RowConstraints(height));
         GridPane.setHalignment(headerLabel, HPos.CENTER);
 
         int column = xMin;
@@ -68,7 +62,7 @@ public class App extends Application{
             Label columnNumber = new Label("" + column);
             this.gridPane.add(columnNumber, i, 0, 1, 1);
             GridPane.setHalignment(columnNumber, HPos.CENTER);
-            this.gridPane.getColumnConstraints().add(new ColumnConstraints(constant));
+            this.gridPane.getColumnConstraints().add(new ColumnConstraints(width));
             column++;
         }
 
@@ -77,7 +71,7 @@ public class App extends Application{
             Label rowNumber = new Label("" + row);
             this.gridPane.add(rowNumber, 0, i, 1, 1);
             GridPane.setHalignment(rowNumber, HPos.CENTER);
-            this.gridPane.getRowConstraints().add(new RowConstraints(constant));
+            this.gridPane.getRowConstraints().add(new RowConstraints(height));
             row--;
         }
    }
@@ -107,7 +101,28 @@ public class App extends Application{
         }
     }
 
+    public Button getStartButton(TextField textField) {
+        Button startButton = new Button("Start");
+        startButton.setOnAction((action) -> {
+            String text = textField.getText();
+            MoveDirection[] directions = new OptionsParser().parse(text.split(" "));
+            IWorldMap map = new GrassField(10);
+            Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(3, 4)};
+            IEngine engine = new SimulationEngine(directions, map, positions, this.orientation, this);
+            Thread engineThread = new Thread(engine::run);
+            engineThread.start();
+        });
+        return startButton;
+    }
 
+    public Button getDirectionButton() {
+        Button directionButton = new Button(orientation.toString());
+        directionButton.setOnAction((action) -> {
+            this.orientation = this.orientation.next();
+            directionButton.setText(this.orientation.toString());
+        });
+        return directionButton;
+    }
 
 
 }

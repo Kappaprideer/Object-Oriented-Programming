@@ -15,9 +15,10 @@ public class Animal implements IMapElement{
     public Animal(IWorldMap map){
         this.map=map;
     }
-    public Animal(IWorldMap map, Vector2d initialPosition){
+    public Animal(IWorldMap map, Vector2d initialPosition, MapDirection orientation){
         this.map=map;
         this.position=initialPosition;
+        this.orientation=orientation;
 
     }
 
