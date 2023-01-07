@@ -27,6 +27,7 @@ public class SimulationEngine implements IEngine, Runnable{
                 animals.add(animal);
             }
         }
+
     }
 
     public List<Animal> getAnimals(){
